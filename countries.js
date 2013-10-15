@@ -108,7 +108,7 @@ if (Meteor.isClient) {
     'submit #editcountry' : function(event) {
       country = Session.get("current_country")
       id = Countries.findOne({country: country})._id
-      data = {country: country}
+      data = {country: $("input#country").val()}
       $("input.property").each(function(){
         property = $(this).attr("id")
         value = $(this).val()

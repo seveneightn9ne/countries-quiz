@@ -103,6 +103,7 @@
 <template name="editcountry">
   <h1>{{country}}</h1>
   <form id="editcountry">
+  Name: <input type="text" class="name" id="country" value="{{country}}" /><br />
   {{#each properties}}
     {{property}}: <input type="text" class="property" id="{{property}}" value="{{fetch ../country property}}" /><br />
   {{/each}}
