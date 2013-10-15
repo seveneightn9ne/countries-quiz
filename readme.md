@@ -4,6 +4,7 @@ This is a quiz app where you can add countries and 'properties', like language, 
 
 ## Todo
 * Allow deleting a country
-* Positive notification on country add
+* Positive notification on country/property add
 * Provide 'default' countries database for import
-* Allow 'aliases' for countries (e.g. Burma/Myanmar)
+* Allow 'aliases' for countries (e.g. Burma/Myanmar). (Is this necessary? There are currently no questions that require you to enter a country name)
+* Get suggestions from Anna
