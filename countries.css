@@ -1,0 +1,15 @@
+/* CSS declarations go here */
+a {
+	cursor: pointer;
+}
+/*h1{
+	margin-top: 50px;
+}*/
+.navbar-fixed-top {
+	margin-bottom: 20px;
+	position: static;
+}
+.alert.pull-left {
+	margin-left: 20px;
+	margin-bottom: 0;
+}

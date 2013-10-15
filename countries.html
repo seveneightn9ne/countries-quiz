@@ -1,0 +1,151 @@
+<head>
+  <title>countries</title>
+</head>
+
+<body>
+  {{> main}}
+</body>
+
+<template name="main">
+  
+  <nav class="navbar navbar-inverse navbar-fixed-top">
+   <div class="navbar-inner">
+    <ul class="nav">
+      <li><a class="links" data-link="listcountries">All Countries</a></li>
+      <li><a class="links" data-link="addcountry">Add a Country</a></li>
+      <li><a class="links" data-link="addproperty">Add a Property</a></li>
+      <li><a class="links" data-link="research">Research</a></li>
+      <li><a class="links" data-link="quiz">Quiz</a></li>
+    </ul>
+   </div>
+  </nav>
+  <div class="container-fluid">
+
+    <div class="row-fluid">
+      <div class="span12">
+        {{#if current_page 'listcountries'}}
+          {{> listcountries}}
+        {{/if}}
+
+        {{#if current_page 'addcountry'}}
+          {{> addcountry}}
+        {{/if}}
+
+        {{#if current_page 'addproperty'}}
+          {{> addproperty}}
+        {{/if}}
+
+        {{#if current_page 'editcountry'}}
+          {{> editcountry current_country}}
+        {{/if}}
+
+        {{#if current_page 'research'}}
+          {{> research}}
+        {{/if}}
+
+        {{#if current_page 'quiz'}}
+          {{> quiz}}
+        {{/if}}
+      </div>
+    </div>
+  </div>
+</template>
+
+<template name="listcountries">
+  <h1>Countries</h1>
+  <table class="table">
+    <tr><th>Country</th>
+        {{#each properties}}
+          <th>{{property}}</th>
+        {{/each}}
+    </tr>
+  {{#each countries}}
+    <tr><td><a class="editcountry" data-country="{{country}}" title="Edit {{country}}">{{country}}</a></td>
+      {{#each properties}}
+        <td>
+          {{#if hasProperty ../country property}}
+            {{fetch ../../country property}}
+          {{/if}}
+        </td>
+      {{/each}}
+    </tr>
+  {{/each}}
+  </table>
+</template>
+
+<template name="addcountry">
+  <h1>Add a Country</h1>
+  <form id="addcountry">
+    New Country: <input type="text" value="" id="country" autofocus /><br />
+    {{#each properties}}
+      {{property}}: <input type="text" class="property" id="{{property}}" /><br />
+    {{/each}}
+    <input type="submit" value="Add" class="pull-left"/>  {{#with error}}
+    <div class="alert alert-error pull-left">
+      {{this}}
+    </div>
+  {{/with}}
+  </form>
+</template>
+
+<template name="addproperty">
+  <h1>Add a Property</h1>
+  <form id="addproperty">
+    New Property: <input type="text" value="" id="property" autofocus /><br />
+    Type: <select id="type">
+            <option value="text">Text</option>
+            <option value="list">List</option>
+          </select><br />
+    <input type="submit" value="Add" id="add">
+  </form>
+</template>
+
+<template name="editcountry">
+  <h1>{{country}}</h1>
+  <form id="editcountry">
+  {{#each properties}}
+    {{property}}: <input type="text" class="property" id="{{property}}" value="{{fetch ../country property}}" /><br />
+  {{/each}}
+  <input type="submit" value="Save" />
+  </form>
+</template>
+
+<template name="research">
+  <h1>Research <small>Add missing data by looking it up on Wikipedia.</small></h1>
+  {{#with cppair}}
+    <p>What {{is}} the {{property}} of {{country}}?</p>
+    <form id="research">
+      <input type="text" id="newdata" data-property="{{property}}" data-country="{{country}}" autofocus /><br />
+      <input type="submit" value="Submit" />
+      <input type="button" value="Skip" id="skip" />
+    </form>
+  {{else}}
+    <p>There is no more info left to add! Want to add a new <a class="goto_property">property</a> or <a class="goto_country">country</a>?</p>
+  {{/with}}
+</template>
+
+<template name="quiz">
+  <h1>Quiz
+  <small>
+  <select id="which-properties">
+    <option value="all">All properties</option>
+    {{#each properties}}
+      <option value="{{property}}">{{property}}</option>
+    {{/each}}
+  </select>
+  </small></h1>
+  {{#with cppair}}
+    <p>What {{is}} the {{property}} of {{country}}?</p>
+    <form id="quiz">
+      <input class="pull-left" type="text" id="question" data-property="{{property}}" data-country="{{country}}" autofocus />
+      {{#with answer}}
+        <div class="alert answer pull-left {{cclass}}">{{display}}</div>
+      {{/with}}<br style="clear:both" />
+      <input type="submit" value="Submit" />
+      <input type="button" value="View Answer" id="viewanswer" />
+      <input type="button" value="Skip" id="skip" />
+    </form>
+  {{else}}
+    <p>No data </p>
+  {{/with}}
+</template>
