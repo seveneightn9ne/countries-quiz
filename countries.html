@@ -80,9 +80,9 @@
     {{#each properties}}
       {{property}}: <input type="text" class="property" id="{{property}}" /><br />
     {{/each}}
-    <input type="submit" value="Add" class="pull-left"/>  {{#with error}}
-    <div class="alert alert-error pull-left">
-      {{this}}
+    <input type="submit" value="Add" class="pull-left"/>  {{#with message}}
+    <div class="alert alert-{{class}} pull-left">
+      {{value}}
     </div>
   {{/with}}
   </form>
@@ -96,7 +96,11 @@
             <option value="text">Text</option>
             <option value="list">List</option>
           </select><br />
-    <input type="submit" value="Add" id="add">
+    <input type="submit" value="Add" id="add">{{#with message}}
+    <div class="alert alert-{{class}} pull-left">
+      {{value}}
+      </div>
+      {{/with}}
   </form>
 </template>
 
@@ -107,7 +111,7 @@
   {{#each properties}}
     {{property}}: <input type="text" class="property" id="{{property}}" value="{{fetch ../country property}}" /><br />
   {{/each}}
-  <input type="submit" value="Save" />
+  <input type="submit" value="Save" /> &nbsp;&nbsp;<a id="delete">delete</a>
   </form>
 </template>
 

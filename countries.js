@@ -57,12 +57,15 @@ if (Meteor.isClient) {
       if (country.value != '') {
         existing = Countries.find({country: country.value}).fetch()
         if (existing.length > 0) {
-          Session.set("addcountry_error", "Country already exists")
+          Session.set("addcountry_message", {class: "error", value: "Country already exists"})
           setTimeout(function() {
-            Session.set("addcountry_error", "")
+            Session.set("addcountry_message", null)
           }, 2000)
         } else {
-          Session.set("addcountry_error", "")
+          Session.set("addcountry_message", {class: "success", value: "Added!"})
+          setTimeout(function() {
+            Session.set("addcountry_message", null)
+          }, 2000)
           data = {country: country.value}
           $("input.property").each(function(){
             property = $(this).attr("id")
@@ -78,8 +81,9 @@ if (Meteor.isClient) {
   Template.addcountry.properties = function() {
     return Properties.find({}, {sort: {property: 1}})
   }
-  Template.addcountry.error = function() {
-    return Session.get("addcountry_error")
+  Template.addcountry.message = function() {
+    console.log(Session.get("addcountry_message"))
+    return Session.get("addcountry_message")
   }
 
   // Template addproperty
@@ -118,6 +122,11 @@ if (Meteor.isClient) {
       Session.set("current_country", "")
       Session.set("current_page", "listcountries")
       event.preventDefault()
+    },
+    'click #delete' : function(event) {
+      id = Countries.findOne({country: Session.get("current_country")})._id
+      Countries.remove({_id: id}, 1)
+      Session.set("current_page", "listcountries")
     }
   })
 
@@ -223,6 +232,7 @@ if (Meteor.isClient) {
             answer: country_obj[property]
           })
         }
+        $("#question").select()
         return
       } else {
         failed_properties.push(property)
@@ -258,6 +268,7 @@ if (Meteor.isClient) {
   Template.quiz.events({
     'click #skip' : function(event) {
       get_new_question($("#which-properties").val())
+      $("#question").val("")
       // Session.set("answer", ["","info"])
     },
     'submit #quiz' : function(event) {
